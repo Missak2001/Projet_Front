@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Inscription</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="res/css/index.css"/>
+</head>
+<body>
+<div class="container">
+    <h3>Inscription</h3>
+    <div>
+        <div class="row">
+            <form class="col s12" id="formLogin">
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="fieldDisplayName" type="text" class="validate" value="">
+                        <label for="fieldDisplayName" class="active">Pseudo </label>
+                    </div>
+                    <div class="input-field col s12">
+                        <input id="fieldLogin" type="text" class="validate" value="">
+                        <label for="fieldLogin" class="active">Login</label>
+                    </div>
+                    <div class="input-field col s12">
+                        <input id="fieldPassword" type="password" class="validate" value="">
+                        <label for="fieldPassword" class="active">Password</label>
+                    </div>
+                    <div class="input-field col s12">
+                        <select id="userType">
+                            <option value="" disabled selected>Choisissez le type d'utilisateur</option>
+                            <option value="client">Client</option>
+                            <option value="entreprise">Entreprise</option>
+                        </select>
+                        <label for="userType">Type d'utilisateur</label>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="row">
+            <button class="waves-effect waves-light btn" onclick="inscriptionController.register()"><i class="material-icons right">check</i>S'inscrire</button>
+        </div>
+    </div>
+</div>
+
+<script type="application/ecmascript" src="app/tools.js"></script>
+<script type="application/ecmascript" src="app/model/classes.js"></script>
+<script type="application/ecmascript" src="app/services/baseapiservice.js"></script>
+<script type="application/ecmascript" src="app/services/useraccountapi.js"></script>
+<script type="application/ecmascript" src="app/controllers/basecontroller.js"></script>
+<script type="application/ecmascript" src="app/controllers/baseformcontroller.js"></script>
+<script type="application/ecmascript" src="app/controllers/inscription.js"></script>
+</body>
+</html>
