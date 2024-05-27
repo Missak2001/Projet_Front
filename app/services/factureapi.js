@@ -5,6 +5,7 @@ class FactureAPI extends BaseAPIService {
 
     registerFacture(titre, categorie_f, prix_f, statut, adresse_facturation, produit_f) {
         this.headers.set('Content-Type', 'application/x-www-form-urlencoded');
+        this.headers.set('Authorization', `Bearer ${sessionStorage.getItem("token")}`)
 
         return new Promise((resolve, reject) => {
             fetch(`${this.url}/registerFacture`, {

@@ -1,8 +1,7 @@
 class ProduitController extends BaseFormController {
     constructor() {
-        super(false)
+        super(false);
         this.svc = new ProduitAPI();
-        //this.loadProducts();// Appel à une méthode pour charger les produits existants
     }
 
     async registerProduit() {
@@ -12,40 +11,29 @@ class ProduitController extends BaseFormController {
 
         if (titreP && categorie_p && prix_P) {
             try {
-                let res = await this.svc.registerProduit(titreP, categorie_p, prix_P);
-                sessionStorage.setItem("token", res.token);
+                // Extraire le token JWT du sessionStorage
+                const token = sessionStorage.getItem("token");
+
+                // Vérifier si le token est présent
+                if (!token) {
+                    console.error("Le token est manquant");
+                    return;
+                }
+
+                // Envoyer le token JWT avec la requête HTTP
+                let res = await this.svc.registerProduit(titreP, categorie_p, prix_P, token);
+                sessionStorage.setItem("token", token); // Mise à jour du token dans le sessionStorage
                 window.location.replace("");
             } catch (err) {
-                console.error(err);
+                console.error("Erreur lors de l'enregistrement du produit :", err);
                 if (err === 409) {
-                    this.toast("Cette adresse e-mail est déjà utilisée. Veuillez en choisir une autre.");
+                    this.toast("Ce produit existe déja");
                 } else {
                     this.displayServiceError();
                 }
             }
         }
     }
-    // async loadProducts() {
-    //     try {
-    //         const produits = await this.svc.getAllProduits();
-    //         this.displayProducts(produits);
-    //     } catch (err) {
-    //         console.error(err);
-    //         this.displayServiceError();
-    //     }
-    // }
-    //
-    // displayProducts(produits) {
-    //     const produitsList = document.getElementById('produitsList');
-    //
-    //     produitsList.innerHTML = '';
-    //
-    //     produits.forEach(produit => {
-    //         const produitElement = document.createElement('div');
-    //         produitElement.textContent = produit.titrep + ' - ' + produit.categorie_p + ' - ' + produit.prix_p;
-    //         produitsList.appendChild(produitElement);
-    //     });
-    // }
 }
 
 window.produitController = new ProduitController();
