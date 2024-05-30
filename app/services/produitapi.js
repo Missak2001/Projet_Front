@@ -1,20 +1,22 @@
 class ProduitAPI extends BaseAPIService {
     constructor() {
-        super("produit")
+        super("produit");
+        this.headers.set('Content-Type', 'application/json');
     }
 
-    registerProduit(titreP, categorie_p, prix_P, token) {
-        this.headers.set('Content-Type', 'application/x-www-form-urlencoded');
+    registerProduit(titrep, categorie_p, prix_p, token) {
         this.headers.set('Authorization', `Bearer ${token}`);
 
         return new Promise((resolve, reject) => {
             fetch(`${this.url}/registerProduit`, {
                 method: "POST",
                 headers: this.headers,
-                body: `titreP=${titreP}&categorie_p=${categorie_p}&prix_P=${prix_P}` // Ne pas envoyer l'ID de l'utilisateur ici
+                body: JSON.stringify({ titrep, categorie_p, prix_p })
             })
                 .then(res => {
-                    console.log("Status de la  réponse : réussi");
+                    if (!res.ok) {
+                        throw new Error(`HTTP error! status: ${res.status}`);
+                    }
                     return res.json();
                 })
                 .then(data => {
@@ -27,5 +29,26 @@ class ProduitAPI extends BaseAPIService {
                 });
         });
     }
-}
 
+    getProduitsWithUser() {
+        return new Promise((resolve, reject) => {
+            fetch(`${this.url}WithUser`, {
+                method: "GET",
+                headers: this.headers,
+            })
+                .then(res => {
+                    if (!res.ok) {
+                        throw new Error(`HTTP error! status: ${res.status}`);
+                    }
+                    return res.json();
+                })
+                .then(data => {
+                    resolve(data);
+                })
+                .catch(err => {
+                    console.error("Erreur lors de la requête :", err);
+                    reject(err);
+                });
+        });
+    }
+}

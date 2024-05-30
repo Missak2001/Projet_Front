@@ -1,3 +1,4 @@
+// produit.js
 class ProduitController extends BaseFormController {
     constructor() {
         super(false);
@@ -5,33 +6,47 @@ class ProduitController extends BaseFormController {
     }
 
     async registerProduit() {
-        let titreP = this.validateRequiredField('#fieldTitre', 'Titre');
+        let titrep = this.validateRequiredField('#fieldTitre', 'Titre');
         let categorie_p = this.validateRequiredField('#fieldCategorie', 'Categorie');
-        let prix_P = this.validateRequiredField('#fieldPrix', 'Prix');
+        let prix_p = this.validateRequiredField('#fieldPrix', 'Prix');
 
-        if (titreP && categorie_p && prix_P) {
+        if (titrep && categorie_p && prix_p) {
             try {
-                // Extraire le token JWT du sessionStorage
                 const token = sessionStorage.getItem("token");
-
-                // Vérifier si le token est présent
                 if (!token) {
                     console.error("Le token est manquant");
                     return;
                 }
 
-                // Envoyer le token JWT avec la requête HTTP
-                let res = await this.svc.registerProduit(titreP, categorie_p, prix_P, token);
-                sessionStorage.setItem("token", token); // Mise à jour du token dans le sessionStorage
+                let res = await this.svc.registerProduit(titrep, categorie_p, prix_p, token);
                 window.location.replace("");
             } catch (err) {
                 console.error("Erreur lors de l'enregistrement du produit :", err);
                 if (err === 409) {
-                    this.toast("Ce produit existe déja");
+                    this.toast("Ce produit existe déjà");
                 } else {
                     this.displayServiceError();
                 }
             }
+        }
+    }
+
+    async loadProduits() {
+        try {
+            const produits = await this.svc.getProduitsWithUser();
+            let produitsList = document.getElementById('produitsList');
+            produitsList.innerHTML = produits.map(produit => `
+                <div class="card">
+                    <div class="card-content">
+                        <span class="card-title">${produit.titrep}</span>
+                        <p>Catégorie: ${produit.categorie_p}</p>
+                        <p>Prix: ${produit.prix_p}</p>
+                        <p>Utilisateur: ${produit.displayName}</p>
+                    </div>
+                </div>
+            `).join('');
+        } catch (err) {
+            console.error("Erreur lors du chargement des produits :", err);
         }
     }
 }

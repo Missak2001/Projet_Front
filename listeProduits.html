@@ -1,53 +1,46 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
+    <title>Liste des Produits</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <link rel="stylesheet" type="text/css" href="res/css/index.css"/>
-    <title>FacturePro - Accueil</title>
+</head>
 <body>
 <header>
     <h1>FacturePro</h1>
     <nav>
         <ul>
             <li><a href="pageAccueil.html">Accueil</a></li>
-            <li><a href="listeProduits.html">Produits</a></li>
+            <li><a href="ajoutProduit.html">Ajouter un Produit</a></li>
             <li><a href="ajoutFacture.html">Factures</a></li>
-            <li><a href="#" onclick="loginController.logout()">Déconnexion</a></li>
+            <li><a href="#" id="logoutButton">Déconnexion</a></li>
         </ul>
     </nav>
 </header>
-
-<main>
-    <section id="hero">
-        <h2>Bienvenue sur FacturePro</h2>
-        <p>Gérez vos factures en toute simplicité.</p>
-    </section>
-
-    <section id="features">
-        <h2>Fonctionnalités principales</h2>
-        <ul>
-            <li>Génération de factures personnalisées</li>
-            <li>Suivi des factures</li>
-            <li>Connexion sécurisée</li>
-        </ul>
-    </section>
-</main>
-
-<footer>
-    <p>© 2024 FacturePro. Tous droits réservés.</p>
-</footer>
-
+<div class="container">
+    <h3>Liste des Produits</h3>
+    <div id="produitsList"></div>
+    <div class="row">
+        <button class="waves-effect waves-light btn" id="addProduitButton"><i class="material-icons right">add</i>Ajouter un Produit</button>
+    </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 <script type="application/ecmascript" src="app/tools.js"></script>
 <script type="application/ecmascript" src="app/model/classes.js"></script>
 <script type="application/ecmascript" src="app/services/baseapiservice.js"></script>
+<script type="application/ecmascript" src="app/services/produitapi.js"></script>
 <script type="application/ecmascript" src="app/services/useraccountapi.js"></script>
 <script type="application/ecmascript" src="app/controllers/basecontroller.js"></script>
 <script type="application/ecmascript" src="app/controllers/baseformcontroller.js"></script>
+<script type="application/ecmascript" src="app/controllers/produit.js"></script>
 <script type="application/ecmascript" src="app/controllers/login.js"></script>
+<script type="application/ecmascript" src="app/services/listeProduits.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', loadProduitsAndSetupEventListeners);
+</script>
 <script>
     // Vérifie si l'utilisateur est connecté
     if (!sessionStorage.getItem("token")) {

@@ -1,21 +1,24 @@
 class FactureController extends BaseFormController {
     constructor() {
-        super(false)
+        super(false);
         this.svc = new FactureAPI();
         this.fetchAndDisplayProducts();
+        this.initStatutSelect();
+        this.initProductSelectListener();
     }
 
     async registerFacture() {
         let titre = this.validateRequiredField('#fieldTitre', 'Titre');
         let categorie_f = this.validateRequiredField('#fieldCategorie', 'Categorie');
-        let prix_f = this.validateRequiredField('#fieldPrix', 'Prix');
-        let statut = JSON.parse(document.getElementById('fieldStatut').value);
+        let statut = this.validateRequiredField('#fieldStatut', 'Statut');
         let adresse_facturation = this.validateRequiredField('#fieldAdresseFacturation', 'Adresse Facturation');
-        let produit_f = this.validateRequiredField('#fieldProduitSelect', 'Produit');
+        let produit_f = Array.from(document.querySelectorAll('#fieldProduitSelect option:checked')).map(option => parseInt(option.value, 10));
 
-        if (titre && categorie_f && prix_f  && statut !== undefined && adresse_facturation && produit_f ) {
+        let prix_f = document.getElementById('fieldPrix').value;
+
+        if (titre && categorie_f && statut && adresse_facturation && produit_f.length > 0 && prix_f) {
             try {
-                let res = await this.svc.registerFacture(titre, categorie_f, prix_f, statut, adresse_facturation, produit_f);
+                let res = await this.svc.registerFacture(titre, categorie_f, parseFloat(prix_f), statut === 'true', adresse_facturation, produit_f);
                 sessionStorage.setItem("token", res.token);
                 window.location.replace("");
             } catch (err) {
@@ -44,12 +47,63 @@ class FactureController extends BaseFormController {
         let productListDropdown = document.getElementById('fieldProduitSelect');
         productListDropdown.innerHTML = '';
 
+        // Ajouter une option par défaut
+        let defaultOption = document.createElement('option');
+        defaultOption.value = '';
+        defaultOption.textContent = 'Sélectionnez un produit';
+        defaultOption.disabled = true;
+        productListDropdown.appendChild(defaultOption);
+
         products.forEach(product => {
             let option = document.createElement('option');
             option.value = product.id;
-            option.textContent = product.titrep;
+            option.dataset.price = product.prix_p; // stocker le prix dans l'attribut data-price
+            option.textContent = `${product.titrep} - ${product.prix_p} €`;
             productListDropdown.appendChild(option);
         });
+
+        // Initialisation de Materialize CSS pour le dropdown
+        M.FormSelect.init(productListDropdown);
+    }
+
+    initStatutSelect() {
+        let statutDropdown = document.getElementById('fieldStatut');
+        statutDropdown.innerHTML = '';
+
+        // Ajouter une option par défaut
+        let defaultOption = document.createElement('option');
+        defaultOption.value = '';
+        defaultOption.textContent = 'Sélectionnez un statut';
+        defaultOption.disabled = true;
+        defaultOption.selected = true;
+        statutDropdown.appendChild(defaultOption);
+
+        // Ajouter les options de statut
+        let statutOptions = [
+            { value: 'true', text: 'En cours' },
+            { value: 'false', text: 'Terminée' }
+        ];
+
+        statutOptions.forEach(statut => {
+            let option = document.createElement('option');
+            option.value = statut.value;
+            option.textContent = statut.text;
+            statutDropdown.appendChild(option);
+        });
+
+        // Initialisation de Materialize CSS pour le dropdown
+        M.FormSelect.init(statutDropdown);
+    }
+
+    initProductSelectListener() {
+        const productSelect = document.getElementById('fieldProduitSelect');
+        productSelect.addEventListener('change', () => this.updateTotalPrice());
+    }
+
+    updateTotalPrice() {
+        const selectedOptions = Array.from(document.querySelectorAll('#fieldProduitSelect option:checked'));
+        const totalPrice = selectedOptions.reduce((total, option) => total + parseFloat(option.dataset.price), 0);
+        document.getElementById('fieldPrix').value = totalPrice;
     }
 }
 
