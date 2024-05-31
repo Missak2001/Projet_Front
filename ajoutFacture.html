@@ -1,3 +1,79 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <title>Facture</title>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">-->
+<!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">-->
+<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>-->
+<!--    <link rel="stylesheet" type="text/css" href="res/css/index.css"/>-->
+<!--</head>-->
+<!--<header>-->
+<!--    <h1>FacturePro</h1>-->
+<!--    <nav>-->
+<!--        <ul>-->
+<!--            <li><a href="pageAccueil.html">Accueil</a></li>-->
+<!--            <li><a href="ajoutProduit.html">Produits</a></li>-->
+<!--            <li><a href="ajoutFacture.html">Factures</a></li>-->
+<!--            <li><a href="#" onclick="loginController.logout()">Déconnexion</a></li>-->
+<!--        </ul>-->
+<!--    </nav>-->
+<!--</header>-->
+<!--<body>-->
+<!--<div class="container">-->
+<!--    <h1>Créer une facture</h1>-->
+<!--    <div class="row">-->
+<!--        <form class="col s12" id="factureForm">-->
+<!--            <div class="input-field col s12">-->
+<!--                <label for="fieldTitre">Titre:</label>-->
+<!--                <input type="text" id="fieldTitre" required><br><br>-->
+<!--            </div>-->
+<!--            <div class="input-field col s12">-->
+<!--                <label for="fieldCategorie">Catégorie:</label>-->
+<!--                <input type="text" id="fieldCategorie" required><br><br>-->
+<!--            </div>-->
+<!--            <label for="fieldProduitSelect">Produits:</label>-->
+<!--            <select id="fieldProduitSelect" multiple required>-->
+<!--            </select><br><br>-->
+<!--            <div class="input-field col s12">-->
+<!--                <label for="fieldPrix"></label>-->
+<!--                <input type="number" id="fieldPrix" readonly required><br><br>-->
+<!--            </div>-->
+<!--            <label for="fieldStatut">Statut:</label>-->
+<!--            <select id="fieldStatut" required>-->
+<!--                <option value="true">En cours</option>-->
+<!--                <option value="false">Terminée</option>-->
+<!--            </select><br><br>-->
+
+<!--            <div class="input-field col s12">-->
+<!--                <label for="fieldAdresseFacturation">Adresse de Facturation:</label>-->
+<!--                <input type="text" id="fieldAdresseFacturation" required><br><br>-->
+<!--            </div>-->
+
+<!--            <div class="row">-->
+<!--                <button class="waves-effect waves-light btn" type="button" onclick="factureController.registerFacture()"><i class="material-icons right">check</i>Enregistrer</button>-->
+<!--            </div>-->
+<!--        </form>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--<script type="application/ecmascript" src="app/tools.js"></script>-->
+<!--<script type="application/ecmascript" src="app/model/classes.js"></script>-->
+<!--<script type="application/ecmascript" src="app/services/baseapiservice.js"></script>-->
+<!--<script type="application/ecmascript" src="app/services/factureapi.js"></script>-->
+<!--<script type="application/ecmascript" src="app/services/useraccountapi.js"></script>-->
+<!--<script type="application/ecmascript" src="app/controllers/basecontroller.js"></script>-->
+<!--<script type="application/ecmascript" src="app/controllers/baseformcontroller.js"></script>-->
+<!--<script type="application/ecmascript" src="app/controllers/facture.js"></script>-->
+<!--<script type="application/ecmascript" src="app/controllers/login.js"></script>-->
+<!--<script>-->
+<!--    if (!sessionStorage.getItem("token")) {-->
+<!--        window.location.replace("login.html");-->
+<!--    }-->
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,9 +112,15 @@
             <label for="fieldProduitSelect">Produits:</label>
             <select id="fieldProduitSelect" multiple required>
             </select><br><br>
-            <div class="input-field col s12">
-                <label for="fieldPrix"></label>
-                <input type="number" id="fieldPrix" readonly required><br><br>
+            <div class="input-field">
+                <label for="fieldPrix">Prix total HT</label>
+                <input id="fieldPrix" type="text" disabled>
+
+            </div>
+
+            <div class="input-field">
+                <input id="fieldPrixTTC" type="text" disabled>
+                <label for="fieldPrixTTC">Prix total TTC</label>
             </div>
             <label for="fieldStatut">Statut:</label>
             <select id="fieldStatut" required>
