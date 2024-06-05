@@ -34,7 +34,7 @@ function setupEventListeners() {
         window.location.href = 'ajoutProduit.html';
     });
 
-    document.getElementById('logoutButton').addEventListener('click', () => {
-        loginController.logout();
-    });
+    // document.getElementById('logoutButton').addEventListener('click', () => {
+    //     loginController.logout();
+    // });
 }

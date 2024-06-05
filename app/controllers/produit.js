@@ -1,4 +1,3 @@
-// produit.js
 class ProduitController extends BaseFormController {
     constructor() {
         super(false);
