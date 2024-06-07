@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modifier Produit</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="res/css/index.css"/>
+</head>
+<body>
+<header>
+    <h1>Modifier Produit</h1>
+    <nav>
+        <ul>
+            <li><a href="pageAccueil.html">Accueil</a></li>
+            <li><a href="listeProduits.html">Produits</a></li>
+            <li><a href="ajoutFacture.html">Factures</a></li>
+            <li><a href="#" onclick="loginController.logout()">Déconnexion</a></li>
+        </ul>
+    </nav>
+</header>
+<div class="container">
+    <h3>Modifier Produit</h3>
+    <div class="row">
+        <form id="productForm" class="col s12">
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="fieldTitre" type="text" class="validate">
+                    <label for="fieldTitre">Titre</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="fieldCategorie" type="text" class="validate">
+                    <label for="fieldCategorie">Catégorie</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="fieldPrix" type="number" class="validate">
+                    <label for="fieldPrix">Prix</label>
+                </div>
+            </div>
+            <div class="row">
+                <button class="btn waves-effect waves-light" type="button" id="saveButton">Enregistrer</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script type="application/ecmascript" src="app/tools.js"></script>
+<script type="application/ecmascript" src="app/model/classes.js"></script>
+<script type="application/ecmascript" src="app/services/baseapiservice.js"></script>
+<script type="application/ecmascript" src="app/services/produitapi.js"></script>
+<script type="application/ecmascript" src="app/services/useraccountapi.js"></script>
+<script type="application/ecmascript" src="app/controllers/basecontroller.js"></script>
+<script type="application/ecmascript" src="app/controllers/baseformcontroller.js"></script>
+<script type="application/ecmascript" src="app/controllers/produit.js"></script>
+<script type="application/ecmascript" src="app/controllers/login.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const saveButton = document.getElementById('saveButton');
+        saveButton.addEventListener('click', (event) => {
+            event.preventDefault();
+            const produitId = new URLSearchParams(window.location.search).get('id');
+            const titre = document.getElementById('fieldTitre').value;
+            const categorie = document.getElementById('fieldCategorie').value;
+            const prix = document.getElementById('fieldPrix').value;
+
+            saveProduct(produitId, titre, categorie, prix);
+        });
+
+        const produitId = new URLSearchParams(window.location.search).get('id');
+        if (produitId) {
+            produitController.editProduit(produitId).catch(err => {
+                console.error("Erreur lors de la récupération des données du produit :", err);
+            });
+        } else {
+            console.error("L'ID du produit est null ou non défini");
+        }
+    });
+
+    function saveProduct(produitId, titre, categorie, prix) {
+        if (!produitId) {
+            console.error("Produit ID is missing");
+            return;
+        }
+
+        const updatedProduit = {
+            id: produitId,
+            titrep: titre,
+            categorie_p: categorie,
+            prix_p: prix
+        };
+
+        const token = sessionStorage.getItem("token");
+
+        console.log("Mise à jour du produit avec les données suivantes :", updatedProduit);
+        produitController.updateProduit(updatedProduit, token)
+            .then(() => {
+                console.log("Produit mis à jour avec succès");
+                window.location.href = `listeProduits.html`;
+            })
+            .catch(err => {
+                console.error("Erreur lors de l'enregistrement des modifications du produit :", err);
+            });
+    }
+</script>
+
+</body>
+</html>
