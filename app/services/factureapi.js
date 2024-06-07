@@ -29,7 +29,6 @@ class FactureAPI extends BaseAPIService {
     constructor() {
         super("facture");
     }
-
     registerFacture(titre, categorie_f, prix_f, statut, adresse_facturation, produit_f, prix_ttc, token) {
         console.log("Token reçu dans la requête :", token);
         this.headers.set('Content-Type', 'application/json');
@@ -49,5 +48,9 @@ class FactureAPI extends BaseAPIService {
 
     getAllProduits() {
         return fetchJSON(`${this.url}/produit`, this.token);
+    }
+
+    getFacturesByUser() {
+        return fetchJSON(`${this.url}/user`, this.token);
     }
 }

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Liste des Factures</title>
+    <title>Mes Factures</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -14,17 +14,18 @@
     <nav>
         <ul>
             <li><a href="pageAccueil.html">Accueil</a></li>
-            <li><a href="listeProduits.html">Produits</a></li>
-            <li><a href="ajoutFacture.html">Ajouter Facture</a></li>
-            <li><a href="listeFactures.html">Liste Factures</a></li>
+            <li><a href="ajoutProduit.html">Produits</a></li>
+            <li><a href="ajoutFacture.html">Créer une Facture</a></li>
+            <li><a href="mesFactures.html">Mes Factures</a></li>
             <li><a href="#" onclick="loginController.logout()">Déconnexion</a></li>
         </ul>
     </nav>
 </header>
 <div class="container">
-    <h3>Liste des Factures</h3>
-    <div id="facturesList"></div>
+    <h2>Mes Factures</h2>
+    <div id="factureList" class="row"></div>
 </div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 <script type="application/ecmascript" src="app/tools.js"></script>
 <script type="application/ecmascript" src="app/model/classes.js"></script>
@@ -35,15 +36,14 @@
 <script type="application/ecmascript" src="app/controllers/baseformcontroller.js"></script>
 <script type="application/ecmascript" src="app/controllers/facture.js"></script>
 <script type="application/ecmascript" src="app/controllers/login.js"></script>
-<script type="application/ecmascript" src="app/services/listeFactures.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', loadFacturesAndSetupEventListeners);
-</script>
-<script>
-    // Vérifie si l'utilisateur est connecté
     if (!sessionStorage.getItem("token")) {
-        // Redirige l'utilisateur vers la page de connexion s'il n'est pas connecté
         window.location.replace("login.html");
+    } else {
+        document.addEventListener('DOMContentLoaded', function() {
+            let factureController = new FactureController();
+            factureController.loadFactures();
+        });
     }
 </script>
 </body>
