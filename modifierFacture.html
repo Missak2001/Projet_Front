@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modifier Facture</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="res/css/index.css"/>
+</head>
+<body>
+<header>
+    <h1>Modifier Facture</h1>
+    <nav>
+        <ul>
+            <li><a href="pageAccueil.html">Accueil</a></li>
+            <li><a href="ajoutProduit.html">Produits</a></li>
+            <li><a href="ajoutFacture.html">Créer Factures</a></li>
+            <li><a href="mesFactures.html">Mes Factures</a></li>
+            <li><a onclick="loginController.logout()">Déconnexion</a></li>
+        </ul>
+    </nav>
+</header>
+<div class="container">
+    <h3>Modifier Facture</h3>
+    <div class="row">
+        <form id="factureForm" class="col s12">
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="fieldTitre" type="text" class="validate">
+                    <label for="fieldTitre">Titre</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="fieldCategorie" type="text" class="validate">
+                    <label for="fieldCategorie">Catégorie</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="fieldPrix" type="number" class="validate">
+                    <label for="fieldPrix">Prix</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="fieldAdresse" type="text" class="validate">
+                    <label for="fieldAdresse">Adresse de Facturation</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <select id="fieldProduit" multiple>
+                        <!-- Options will be dynamically loaded -->
+                    </select>
+                    <label for="fieldProduit">Produits</label>
+                </div>
+            </div>
+            <div class="row">
+                <button class="btn waves-effect waves-light" type="button" id="saveButton">Enregistrer</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script type="application/ecmascript" src="app/tools.js"></script>
+<script type="application/ecmascript" src="app/model/classes.js"></script>
+<script type="application/ecmascript" src="app/services/baseapiservice.js"></script>
+<script type="application/ecmascript" src="app/services/factureapi.js"></script>
+<script type="application/ecmascript" src="app/controllers/basecontroller.js"></script>
+<script type="application/ecmascript" src="app/controllers/baseformcontroller.js"></script>
+<script type="application/ecmascript" src="app/controllers/facture.js"></script>
+<script type="application/ecmascript" src="app/controllers/login.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const saveButton = document.getElementById('saveButton');
+        const factureId = new URLSearchParams(window.location.search).get('id');
+
+        if (!factureId) {
+            console.error("L'ID de la facture est null ou non défini");
+            return;
+        }
+
+        // Load facture data
+        factureController.editFacture(factureId).then(facture => {
+            document.getElementById('fieldTitre').value = facture.titre;
+            document.getElementById('fieldCategorie').value = facture.categorie_f;
+            document.getElementById('fieldPrix').value = facture.prix_f;
+            document.getElementById('fieldAdresse').value = facture.adresse_facturation;
+            M.updateTextFields(); // Update Materialize labels
+
+            // Load products and select the ones related to the facture
+            factureController.getProduits().then(produits => {
+                const produitSelect = document.getElementById('fieldProduit');
+                produits.forEach(produit => {
+                    const option = document.createElement('option');
+                    option.value = produit.id;
+                    option.text = produit.titrep;
+                    if (facture.produit_f.includes(produit.id)) {
+                        option.selected = true;
+                    }
+                    produitSelect.appendChild(option);
+                });
+                M.FormSelect.init(produitSelect);
+            }).catch(err => {
+                console.error("Erreur lors de la récupération des produits :", err);
+            });
+        }).catch(err => {
+            console.error("Erreur lors de la récupération des données de la facture :", err);
+        });
+
+        // Save facture data
+        saveButton.addEventListener('click', (event) => {
+            event.preventDefault();
+            const titre = document.getElementById('fieldTitre').value;
+            const categorie = document.getElementById('fieldCategorie').value;
+            const prix = parseFloat(document.getElementById('fieldPrix').value);
+            const adresse = document.getElementById('fieldAdresse').value;
+            const produits = Array.from(document.getElementById('fieldProduit').selectedOptions).map(option => option.value);
+
+            saveFacture(factureId, titre, categorie, prix, adresse, produits);
+        });
+    });
+
+    function saveFacture(factureId, titre, categorie, prix, adresse, produits) {
+        const updatedFacture = {
+            id: factureId,
+            titre: titre,
+            categorie_f: categorie,
+            prix_f: prix,
+            adresse_facturation: adresse,
+            produit_f: produits
+        };
+
+        const token = sessionStorage.getItem("token");
+
+        factureController.updateFacture(updatedFacture, token)
+            .then(() => {
+                console.log("Facture mise à jour avec succès");
+                window.location.href = `listeFactures.html`;
+            })
+            .catch(err => {
+                console.error("Erreur lors de l'enregistrement des modifications de la facture :", err);
+            });
+    }
+</script>
+</body>
+</html>
