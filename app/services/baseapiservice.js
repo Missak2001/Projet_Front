@@ -1,5 +1,3 @@
-import { API_BASE_URL } from "./config.js";
-
 class BaseAPIService {
     constructor(resource) {
         this.url = `${API_BASE_URL}/${resource}`;
@@ -10,3 +8,6 @@ class BaseAPIService {
         this.headers.set("Authorization", `Bearer ${token}`);
     }
 }
+
+// rendre disponible globalement
+window.BaseAPIService = BaseAPIService;

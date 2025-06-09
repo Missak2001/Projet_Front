@@ -37,3 +37,5 @@ class UserAccountAPI extends BaseAPIService {
         }
     }
 }
+window.UserAccountAPI = UserAccountAPI;
+
