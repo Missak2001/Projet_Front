@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Modifier Profil</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="res/css/index.css"/>
+</head>
+<body>
+<header>
+    <h1>FacturePro</h1>
+    <nav>
+        <ul>
+            <li><a href="pageAccueil.html">Accueil</a></li>
+            <li><a href="listeProduits.html">Produits</a></li>
+            <li><a href="ajoutFacture.html">Créer Factures</a></li>
+            <li><a href="mesFactures.html">Mes Factures</a></li>
+            <li><a href="profil.html">Profil</a></li>
+            <li><a onclick="loginController.logout()">Déconnexion</a></li>
+        </ul>
+    </nav>
+</header>
+
+<div class="container">
+    <h4>Modifier mon profil</h4>
+    <form id="formModifierProfil">
+        <div class="input-field">
+            <input id="newDisplayName" type="text" required>
+            <label for="newDisplayName">Nouveau nom affiché</label>
+        </div>
+
+        <div class="input-field">
+            <input id="newPassword" type="password">
+            <label for="newPassword">Nouveau mot de passe (optionnel)</label>
+        </div>
+
+        <button type="submit" class="btn red lighten-1">Mettre à jour</button>
+    </form>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script src="app/controllers/modifierProfil.js"></script>
+</body>
+</html>

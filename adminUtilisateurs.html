@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Utilisateurs - Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <style>
+        .user-card {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px;
+            border: 1px solid #ccc;
+            margin-bottom: 12px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        .user-field {
+            flex: 1 0 120px;
+            padding: 5px;
+        }
+
+        nav ul {
+            display: flex;
+            padding-left: 20px;
+        }
+
+        nav li {
+            margin-right: 20px;
+        }
+
+        header h1 {
+            padding-left: 20px;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Admin - FacturePro</h1>
+    <nav class="red lighten-1">
+        <ul>
+            <li><a href="adminDashboard.html">Dashboard</a></li>
+            <li><a href="adminProduits.html">Produits</a></li>
+            <li><a href="adminFactures.html">Factures</a></li>
+            <li><a href="adminUtilisateurs.html">Utilisateurs</a></li>
+            <li><a href="#" onclick="logout()">Déconnexion</a></li>
+        </ul>
+    </nav>
+</header>
+
+<div class="container">
+    <h4>Tous les Utilisateurs</h4>
+    <div id="userContainer"></div>
+</div>
+
+<script>
+    async function loadUsers() {
+        const token = sessionStorage.getItem("token");
+        const res = await fetch("https://projetback-production.up.railway.app/admin/users", {
+            headers: { "Authorization": `Bearer ${token}` }
+        });
+
+        if (!res.ok) return alert("Erreur de chargement des utilisateurs");
+
+        const users = await res.json();
+        const container = document.getElementById("userContainer");
+        container.innerHTML = "";
+
+        users.forEach(u => {
+            const div = document.createElement("div");
+            div.className = "user-card";
+            div.innerHTML = `
+        <div class="user-field"><strong>ID</strong>: ${u.id}</div>
+        <div class="user-field"><strong>Nom</strong>: ${u.displayname || '-'}</div>
+        <div class="user-field"><strong>Login</strong>: ${u.login}</div>
+        <div class="user-field"><strong>Rôle</strong>: ${u.role || 'user'}</div>
+        <div class="user-field"><strong>Entreprise</strong>: ${u.isenterprise ? 'Oui' : 'Non'}</div>
+      `;
+            container.appendChild(div);
+        });
+    }
+
+    function logout() {
+        sessionStorage.removeItem("token");
+        window.location.href = "login.html";
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        if (!sessionStorage.getItem("token")) {
+            window.location.href = "login.html";
+        } else {
+            loadUsers();
+        }
+    });
+</script>
+</body>
+</html>

@@ -2,12 +2,12 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <title>Profil</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <link rel="stylesheet" type="text/css" href="res/css/index.css"/>
-    <title>FacturePro - Accueil</title>
+</head>
 <body>
 <header>
     <h1>FacturePro</h1>
@@ -18,43 +18,40 @@
             <li><a href="ajoutFacture.html">Créer Factures</a></li>
             <li><a href="mesFactures.html">Mes Factures</a></li>
             <li><a href="profil.html">Profil</a></li>
-            <li><a onclick="loginController.logout()">Déconnexion</a></li>
+            <li><a onclick="logout()">Déconnexion</a></li>
         </ul>
     </nav>
 </header>
 
-<main>
-    <section id="hero">
-        <h2>Bienvenue sur FacturePro</h2>
-        <p>Gérez vos factures en toute simplicité.</p>
-    </section>
+<div class="container">
+    <h2>Mon Profil</h2>
+    <div class="card">
+        <div class="card-content">
+            <p><strong>Nom :</strong> <span id="displayName"></span></p>
+            <p><strong>Login :</strong> <span id="login"></span></p>
+            <p><strong>Rôle :</strong> <span id="role"></span></p>
+        </div>
+    </div>
+    <a class="btn red lighten-1" href="modifierProfil.html">Modifier mon profil</a>
 
-    <section id="features">
-        <h2>Fonctionnalités principales</h2>
-        <ul>
-            <li>Génération de factures personnalisées</li>
-            <li>Suivi des factures</li>
-            <li>Connexion sécurisée</li>
-        </ul>
-    </section>
-</main>
+</div>
 
-<footer>
-    <p>© 2024 FacturePro. Tous droits réservés.</p>
-</footer>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 <script type="application/ecmascript" src="app/tools.js"></script>
 <script type="application/ecmascript" src="app/model/classes.js"></script>
 <script type="application/ecmascript" src="app/services/baseapiservice.js"></script>
 <script type="application/ecmascript" src="app/services/useraccountapi.js"></script>
 <script type="application/ecmascript" src="app/controllers/basecontroller.js"></script>
-<script type="application/ecmascript" src="app/controllers/baseformcontroller.js"></script>
 <script type="application/ecmascript" src="app/controllers/login.js"></script>
+<script type="application/ecmascript" src="app/controllers/profil.js"></script>
+
 <script>
-    // Vérifie si l'utilisateur est connecté
     if (!sessionStorage.getItem("token")) {
-        // Redirige l'utilisateur vers la page de connexion s'il n'est pas connecté
         window.location.replace("login.html");
+    } else {
+        document.addEventListener('DOMContentLoaded', function() {
+            afficherInfosProfil();
+        });
     }
 </script>
 </body>

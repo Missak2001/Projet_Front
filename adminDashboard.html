@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+</head>
+<body>
+<header>
+    <h1>Admin - FacturePro</h1>
+    <nav>
+        <ul>
+            <li><a href="adminDashboard.html">Dashboard</a></li>
+            <li><a href="adminProduits.html">Produits</a></li>
+            <li><a href="adminFactures.html">Factures</a></li>
+            <li><a href="adminUtilisateurs.html">Utilisateurs</a></li>
+            <li><a onclick="logout()">Déconnexion</a></li>
+        </ul>
+    </nav>
+</header>
+
+<div class="container">
+    <h3>Données Administrateur</h3>
+    <div>
+        <h5>Utilisateurs</h5>
+        <ul id="userList" class="collection"></ul>
+        <h5>Produits</h5>
+        <ul id="productList" class="collection"></ul>
+        <h5>Factures</h5>
+        <ul id="factureList" class="collection"></ul>
+    </div>
+</div>
+
+<script>
+    async function loadAdminData() {
+        const token = sessionStorage.getItem("token");
+        const res = await fetch("http://localhost:3333/admin/dashboardData", {
+            headers: { "Authorization": `Bearer ${token}` }
+        });
+
+        if (res.status === 403) return window.location.href = "login.html";
+
+        const data = await res.json();
+
+        const userList = document.getElementById("userList");
+        data.users.forEach(u => {
+            const li = document.createElement("li");
+            li.className = "collection-item";
+            li.textContent = `${u.displayname || '---'} - ${u.login} (${u.role || 'user'})`;
+            userList.appendChild(li);
+        });
+
+        const productList = document.getElementById("productList");
+        data.produits.forEach(p => {
+            const li = document.createElement("li");
+            li.className = "collection-item";
+            li.textContent = `${p.titrep} - ${p.prix_p} €`;
+            productList.appendChild(li);
+        });
+
+        const factureList = document.getElementById("factureList");
+        data.factures.forEach(f => {
+            const li = document.createElement("li");
+            li.className = "collection-item";
+            li.textContent = `#${f.id} - ${f.titre} - ${f.prix_ttc} €`;
+            factureList.appendChild(li);
+        });
+    }
+
+    function logout() {
+        sessionStorage.removeItem("token");
+        window.location.href = "login.html";
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        if (!sessionStorage.getItem("token")) {
+            return window.location.href = "login.html";
+        }
+        loadAdminData();
+    });
+</script>
+</body>
+</html>

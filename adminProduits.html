@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Produits - Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <style>
+        .produit-card {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px;
+            border: 1px solid #ccc;
+            margin-bottom: 12px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        .produit-field {
+            flex: 1 0 120px;
+            padding: 5px;
+        }
+
+        .produit-card button {
+            margin-left: 10px;
+        }
+
+        header h1 {
+            padding-left: 20px;
+        }
+
+        nav ul {
+            display: flex;
+            padding-left: 20px;
+        }
+
+        nav li {
+            margin-right: 20px;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Admin - FacturePro</h1>
+    <nav class="red lighten-1">
+        <ul>
+            <li><a href="adminDashboard.html">Dashboard</a></li>
+            <li><a href="adminProduits.html">Produits</a></li>
+            <li><a href="adminFactures.html">Factures</a></li>
+            <li><a href="adminUtilisateurs.html">Utilisateurs</a></li>
+            <li><a href="#" onclick="logout()">Déconnexion</a></li>
+        </ul>
+    </nav>
+</header>
+
+<div class="container">
+    <h4>Tous les Produits</h4>
+    <div id="produitContainer"></div>
+</div>
+
+<script>
+    async function loadProduits() {
+        const token = sessionStorage.getItem("token");
+        const res = await fetch("http://localhost:3333/admin/produits", {
+            headers: { "Authorization": `Bearer ${token}` }
+        });
+
+        if (!res.ok) return alert("Erreur de chargement des produits");
+
+        const produits = await res.json();
+        const container = document.getElementById("produitContainer");
+        container.innerHTML = "";
+
+        produits.forEach(p => {
+            const div = document.createElement("div");
+            div.className = "produit-card";
+            div.innerHTML = `
+                <div class="produit-field"><strong>ID</strong>: ${p.id}</div>
+                <div class="produit-field"><strong>Titre</strong>: ${p.titrep}</div>
+                <div class="produit-field"><strong>Catégorie</strong>: ${p.categorie_p}</div>
+                <div class="produit-field"><strong>Prix</strong>: ${p.prix_p} €</div>
+                <div class="produit-field"><strong>ID Utilisateur</strong>: ${p.id_useraccount}</div>
+            `;
+            container.appendChild(div);
+        });
+    }
+    function logout() {
+        sessionStorage.removeItem("token");
+        window.location.href = "login.html";
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        if (!sessionStorage.getItem("token")) {
+            window.location.href = "login.html";
+        } else {
+            loadProduits();
+        }
+    });
+</script>
+</body>
+</html>
