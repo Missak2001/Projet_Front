@@ -1,5 +1,6 @@
 class BaseAPIService {
     constructor(resource) {
+        // Utilise la variable globale
         this.url = `${API_BASE_URL}/${resource}`;
         this.headers = new Headers();
     }
@@ -9,5 +10,5 @@ class BaseAPIService {
     }
 }
 
-// rendre disponible globalement
+// Rendez-la disponible globalement si nécessaire
 window.BaseAPIService = BaseAPIService;
