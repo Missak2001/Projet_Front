@@ -40,29 +40,17 @@
             </form>
         </div>
         <div class="row">
-            <button onclick="inscriptionController.register()">S'inscrire</button>
+            <button class="waves-effect waves-light btn" onclick="inscriptionController.register()"><i class="material-icons right">check</i>S'inscrire</button>
         </div>
     </div>
 </div>
 
-<!-- ⚠️ Important : config.js doit venir en premier -->
-<script src="app/services/config.js"></script>
-
-<!-- Utilitaires -->
-<script src="app/tools.js"></script>
-<script src="app/model/classes.js"></script>
-
-<!-- Services -->
-<script src="app/services/baseapiservice.js"></script>
-<script src="app/services/useraccountapi.js"></script>
-
-<!-- Base controller classes -->
-<script src="app/controllers/basecontroller.js"></script>
-<script src="app/controllers/baseformcontroller.js"></script>
-
-<!-- Page spécifique -->
-<script src="app/controllers/inscription.js"></script>
-
-
+<script type="application/ecmascript" src="app/tools.js"></script>
+<script type="application/ecmascript" src="app/model/classes.js"></script>
+<script type="application/ecmascript" src="app/services/baseapiservice.js"></script>
+<script type="application/ecmascript" src="app/services/useraccountapi.js"></script>
+<script type="application/ecmascript" src="app/controllers/basecontroller.js"></script>
+<script type="application/ecmascript" src="app/controllers/baseformcontroller.js"></script>
+<script type="application/ecmascript" src="app/controllers/inscription.js"></script>
 </body>
 </html>

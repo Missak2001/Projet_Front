@@ -14,11 +14,9 @@
     <nav>
         <ul>
             <li><a href="pageAccueil.html">Accueil</a></li>
-            <li><a href="listeProduits.html">Produits</a></li>
-            <li><a href="ajoutFacture.html">Créer Factures</a></li>
-            <li><a href="mesFactures.html">Mes Factures</a></li>
-            <li><a href="profil.html">Profil</a></li>
-            <li><a onclick="loginController.logout()">Déconnexion</a></li>
+            <li><a href="ajoutProduit.html">Produits</a></li>
+            <li><a href="ajoutFacture.html">Factures</a></li>
+            <li><a href="#" onclick="loginController.logout()">Déconnexion</a></li>
         </ul>
     </nav>
 </header>
@@ -35,18 +33,15 @@
                 <label for="fieldCategorie">Catégorie:</label>
                 <input type="text" id="fieldCategorie" required><br><br>
             </div>
-            <label for="fieldProduitSelect">Produits:</label>
-            <select id="fieldProduitSelect" multiple required>
-            </select><br><br>
-            <div class="input-field">
-                <label for="fieldPrix">Prix total HT</label>
-                <input id="fieldPrix" type="text" disabled>
+            <div class="input-field col s12">
+                <label for="fieldPrix">Prix:</label>
+                <input type="number" id="fieldPrix" required><br><br>
             </div>
 
-            <div class="input-field">
-                <input id="fieldPrixTTC" type="text" disabled>
-                <label for="fieldPrixTTC">Prix total TTC</label>
-            </div>
+            <label for="fieldProduitSelect">Produit:</label>
+            <select id="fieldProduitSelect" required>
+            </select><br><br>
+
             <label for="fieldStatut">Statut:</label>
             <select id="fieldStatut" required>
                 <option value="true">En cours</option>
@@ -59,7 +54,7 @@
             </div>
 
             <div class="row">
-                <button class="waves-effect waves-light btn" type="button" onclick="factureController.registerFacture()"><i class="material-icons right">check</i>Enregistrer</button>
+                <button class="waves-effect waves-light btn" onclick="factureController.registerFacture()"><i class="material-icons right">check</i>Enregistrer</button>
             </div>
         </form>
     </div>

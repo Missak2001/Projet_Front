@@ -1,11 +1,12 @@
-class BaseAPIService {
-    constructor(resource) {
-        this.url = `${window.API_BASE_URL}/${resource}`;
-        this.headers = new Headers();
-    }
+const serviceBaseUrl = "http://localhost:3333"
 
-    setAuthToken(token) {
-        this.headers.set("Authorization", `Bearer ${token}`);
+class BaseAPIService {
+    constructor(url) {
+        this.url = `${serviceBaseUrl}/${url}`
+        this.token = sessionStorage.getItem("token")
+        this.headers = new Headers()
+        if (this.token !== undefined) {
+            this.headers.append("Authorization", `Bearer ${this.token}`)
+        }
     }
 }
-window.BaseAPIService = BaseAPIService;

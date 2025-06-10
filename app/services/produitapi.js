@@ -227,7 +227,6 @@ class ProduitAPI extends BaseAPIService {
                 .catch(err => {
                     console.error("Erreur lors de la requête :", err);
                     reject(err);
-                    reject(err);
                 });
         });
     }

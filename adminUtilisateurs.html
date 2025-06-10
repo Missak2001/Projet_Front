@@ -58,7 +58,7 @@
 <script>
     async function loadUsers() {
         const token = sessionStorage.getItem("token");
-        const res = await fetch("https://projetback-production.up.railway.app/admin/users", {
+        const res = await fetch("http://localhost:3333/admin/users", {
             headers: { "Authorization": `Bearer ${token}` }
         });
 

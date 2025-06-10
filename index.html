@@ -22,7 +22,7 @@
 
 <!--</body>-->
 <!--</html>-->
-<!DOCTYPE html>
+<!DOCTYPE html>Add commentMore actions
 <html lang="en">
 <head>
     <title>Facture Pro</title>
@@ -41,13 +41,8 @@
 <script type="application/ecmascript" src="app/services/useraccountapi.js"></script>
 <script type="application/ecmascript" src="app/controllers/basecontroller.js"></script>
 <script type="application/ecmascript" src="app/controllers/baseformcontroller.js"></script>
-<script type="application/ecmascript" src="app/controllers/login.js"></script>
-<script>
-    // Vérifie si l'utilisateur est connecté
-    if (!sessionStorage.getItem("token")) {
-        // Redirige l'utilisateur vers la page de connexion s'il n'est pas connecté
-        window.location.replace("login.html");
-    }
-</script>
+<script>navigate("index")</script>
+
+
 </body>
 </html>
